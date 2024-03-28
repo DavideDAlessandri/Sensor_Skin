@@ -2,8 +2,8 @@
 
 - [Hardware](#Hardware)
 - [Skin](#Skin)
-- [micro-ROS (Receiver)](#micro-ROS (Receiver))
-- [TCP-IP (Receiver)](#TCP-IP (Receiver))
+- [micro-ROS (Receiver)](#micro-ROS)
+- [TCP-IP (Receiver)](#TCP-IP)
 
 ---
 ## Hardware
