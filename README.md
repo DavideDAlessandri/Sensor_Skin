@@ -14,7 +14,7 @@ To program the skin the external USB-to-UART bridge adapter is needed.
 ---
 ## Skin
 ### Requirements
-This folder contains the code for the skin. To update the code on the ESP32 microcontroller [Arduino IDE](https://www.arduino.cc/en/software) or  [Arduino CLI](https://www.arduino.cc/pro/software-pro-cli/) is needed. To program ESP32 with Arduino please follow this [tutorial](https://shop.m5stack.com/blogs/news/step-by-step-guide-how-to-program-esp32-with-arduino-ide).
+This folder contains the code for the skin. To update the code on the ESP32 microcontroller [Arduino IDE](https://www.arduino.cc/en/software) or  [Arduino CLI](https://www.arduino.cc/pro/software-pro-cli/) is needed. To program ESP32 with Arduino please follow this [tutorial](https://shop.m5stack.com/blogs/news/step-by-step-guide-how-to-program-esp32-with-arduino-ide). The libraries needed to compile the projects are available in the libraries folder.
 
 ### Usage
 This code reads the data of the sensors and sends them to the receiver via ESP-NOW. To send the data to a different receiver the MAC address of the receiver must be changed in the code:
@@ -61,7 +61,7 @@ If the microcontroller doesn't send data try to push the reset button. Once the 
 ---
 ## TCP-IP (Receiver)
 ### Requirements
-To update the code on the ESP32 microcontroller [Arduino IDE](https://www.arduino.cc/en/software) or  [Arduino CLI](https://www.arduino.cc/pro/software-pro-cli/) is needed ([tutorial](https://shop.m5stack.com/blogs/news/step-by-step-guide-how-to-program-esp32-with-arduino-ide)).
+To update the code on the ESP32 microcontroller [Arduino IDE](https://www.arduino.cc/en/software) or  [Arduino CLI](https://www.arduino.cc/pro/software-pro-cli/) is needed ([tutorial](https://shop.m5stack.com/blogs/news/step-by-step-guide-how-to-program-esp32-with-arduino-ide)). The libraries needed to compile the projects are available in the libraries folder.
 
 ### Usage
 This code allows TCP-IP communication, the receiver is the slave and the robot controller is the master. To allow the communication connect the receiver with an RJ45 cable to the router connected also to the robot controller. Remember to set the **IP address** and the **port** of the server in the code:
