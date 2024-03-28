@@ -13,6 +13,7 @@
 #include <esp_now.h>
 #include <WiFi.h>
 #include <esp_wifi.h>
+#include "SSD1306Wire.h"
 
 #if !defined(MICRO_ROS_TRANSPORT_ARDUINO_SERIAL)
 #error This example is only avaliable for Arduino framework with serial transport.
@@ -29,6 +30,10 @@ rcl_timer_t timer;
 
 #define RCCHECK(fn) { rcl_ret_t temp_rc = fn; if((temp_rc != RCL_RET_OK)){error_loop();}}
 #define RCSOFTCHECK(fn) { rcl_ret_t temp_rc = fn; if((temp_rc != RCL_RET_OK)){}}
+
+#define     OLED_SCL       22
+#define     OLED_SDA       21
+SSD1306Wire  display(0x3c, OLED_SDA, OLED_SCL);
 
 //-----------------------------------------------------------------------------------------------
 
@@ -377,6 +382,25 @@ void error_loop() {
 }
 
 void setup() {
+
+
+  display.init();
+  display.flipScreenVertically();
+
+  display.setFont(ArialMT_Plain_16);
+  display.setTextAlignment(TEXT_ALIGN_LEFT);
+
+  display.drawString(0, 0, "Micro-ROS");
+
+  display.setFont(ArialMT_Plain_10);
+
+  display.drawString(0, 18, "Please start agent..." );
+  display.display();
+  
+  delay(7000);
+  display.drawString(0, 30, "If not working, reboot..." );
+  display.display();
+
   // Configure serial transport
   Serial.begin(115200);
   set_microros_serial_transports(Serial);
@@ -417,9 +441,34 @@ void setup() {
 
   esp_wifi_set_promiscuous(true);
   esp_wifi_set_promiscuous_rx_cb(&promiscuous_rx_cb);
+
+  display.clear();
+
+  delay(1000);
+
+  display.setFont(ArialMT_Plain_16);
+  display.drawString(0, 0, "Micro-ROS");
+  display.setFont(ArialMT_Plain_10);
+  display.drawString(0, 18, "Configuration: OK" );
+  display.display();
+
+  delay(2000);
+  display.drawString(0, 30, "Sending data..." );
+  display.display();
+
+  delay(18000);
+
+  display.drawString(0, 44, "© Davide D'Alessandri" );
+  display.display();
+
+  delay(2000);
+  
+  display.displayOff();
+
 }
 
 void loop() {
   delay(16);
   RCSOFTCHECK(rclc_executor_spin_some(&executor, RCL_MS_TO_NS(1)));
+
 }
