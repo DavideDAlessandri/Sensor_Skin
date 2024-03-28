@@ -74,3 +74,5 @@ IPAddress server(192,168,0,100);
 // Set tcp-ip port:
 if (client.connect(server,8075))
 ```
+
+Once the connection is established the microcontroller starts to send the data to the master.
