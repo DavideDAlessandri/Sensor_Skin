@@ -30,7 +30,7 @@ uint8_t broadcastAddress[] = {0xD4,0xD4,0xDA,0x97,0xF3,0x74}; //lilzGo Lite
 To find the MAC address of the receiver use the code "get_macAdress" in the receiver folder.
 
 ---
-## microROS (Receiver)
+## micro-ROS (Receiver)
 ### Requirements
 To update the code on the ESP32 microcontroller PlatformIO is needed:
 - PlatformIO [local installation](https://docs.platformio.org/en/stable/core/installation.html) or [PlatformIO IDE for VSCode](https://platformio.org/install/ide?install=vscode)
@@ -44,3 +44,17 @@ To update the code on the ESP32 microcontroller PlatformIO is needed:
 See [micro-ROS for PlatformIO](https://github.com/micro-ROS/micro_ros_platformio) GitHub page for further information.
 
 ### Usage
+This folder contains two programs:
+- 1 full data: to transmit all sensor data
+- 2 position and distance: to transmit only the minimum distance and the sensor measuring the minimum distance
+
+When one of these program is updated on the receiver connect the receiver via USB on a ROS2 computer. on the ROS2 computer start the **micro-ROS agent** by using this docker command:
+
+```bash
+# Serial micro-ROS Agent
+docker run -it --rm -v /dev:/dev -v /dev/shm:/dev/shm --privileged --net=host microros/micro-ros-agent:$ROS_DISTRO serial --dev [YOUR BOARD PORT] -v6
+```
+
+See [micro-ROS for PlatformIO](https://github.com/micro-ROS/micro_ros_platformio) GitHub page for further information.
+
+If the microcontroller doesn't send data try to push the reset button. Once the connection is established the sensor data are published on the ROS topic **micro_ros_platformio_node_publisher**. The display of the microcontroller turns off after 20 seconds.
