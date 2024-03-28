@@ -5,6 +5,7 @@ The sensor skin is composed of the actual skin and a receiver:
 <img src="https://github.com/DavideDAlessandri/Sensor_Skin/blob/main/Skin/pic/Picture1.png" width="650">
 
 To power the skin please use the special cable included in the box:
+
 <img src="https://github.com/DavideDAlessandri/Sensor_Skin/blob/main/Skin/pic/Picture2.png" width="350">
 
 To program the skin the external USB-to-UART bridge adapter is needed.
