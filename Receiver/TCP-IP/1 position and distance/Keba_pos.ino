@@ -408,7 +408,7 @@ void setup() {//----------------------------------------------------------------
     display.drawString(0, 24, "Ethernet initialized");
     display.display();
 
-    // Attempt to connect to the server running at IP address 192.168.1.81 and port 5000.
+    // Set tcp-ip port:
     if (client.connect(server,8075))
     {
         Serial.print("Connected to server running at ");

@@ -58,3 +58,19 @@ docker run -it --rm -v /dev:/dev -v /dev/shm:/dev/shm --privileged --net=host mi
 See [micro-ROS for PlatformIO](https://github.com/micro-ROS/micro_ros_platformio) GitHub page for further information.
 
 If the microcontroller doesn't send data try to push the reset button. Once the connection is established the sensor data are published on the ROS topic **micro_ros_platformio_node_publisher**. The display of the microcontroller turns off after 20 seconds.
+
+---
+## TCP-IP (Receiver)
+### Requirements
+To update the code on the ESP32 microcontroller [Arduino IDE](https://www.arduino.cc/en/software) or  [Arduino CLI](https://www.arduino.cc/pro/software-pro-cli/) is needed ([tutorial](https://shop.m5stack.com/blogs/news/step-by-step-guide-how-to-program-esp32-with-arduino-ide)).
+
+### Usage
+This code allows TCP-IP communication, the receiver is the slave and the robot controller is the master. To allow the communication connect the receiver with an RJ45 cable to the router connected also to the robot controller. Remember to set the **IP address** and the **port** of the server in the code:
+
+```bash
+EthernetClient client;
+IPAddress server(192,168,0,100); 
+
+// Set tcp-ip port:
+if (client.connect(server,8075))
+```
