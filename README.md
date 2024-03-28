@@ -1,10 +1,5 @@
 # Sensor skin repository
 
-- [Hardware](#Hardware)
-- [Skin](#Skin)
-- [micro-ROS (Receiver)](#micro-ROS)
-- [TCP-IP (Receiver)](#TCP-IP)
-
 ---
 ## Hardware
 The sensor skin is composed of the actual skin and a receiver:
