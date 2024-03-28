@@ -1,6 +1,5 @@
 # Sensor skin repository
 
----
 ## Hardware
 The sensor skin is composed of the actual skin and a receiver:
 
