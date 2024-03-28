@@ -28,3 +28,19 @@ uint8_t broadcastAddress[] = {0xD4,0xD4,0xDA,0x97,0xF3,0x74}; //lilzGo Lite
   ```
   
 To find the MAC address of the receiver use the code "get_macAdress" in the receiver folder.
+
+---
+## microROS (Receiver)
+### Requirements
+To update the code on the ESP32 microcontroller PlatformIO is needed:
+- PlatformIO [local installation](https://docs.platformio.org/en/stable/core/installation.html) or [PlatformIO IDE for VSCode](https://platformio.org/install/ide?install=vscode)
+- PlatformIO Core version 6.1.0 or greater
+- PlatformIO needs  `git`, `cmake` and `pip3` to handle micro-ROS internal dependencies:
+
+  ```bash
+  apt install -y git cmake python3-pip
+  ```
+
+See [micro-ROS for PlatformIO](https://github.com/micro-ROS/micro_ros_platformio) GitHub page for further information.
+
+### Usage
