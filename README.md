@@ -18,3 +18,13 @@ To program the skin the external USB-to-UART bridge adapter is needed.
 This folder contains the code for the skin. To update the code on the ESP32 microcontroller [Arduino IDE](https://www.arduino.cc/en/software) or  [Arduino CLI](https://www.arduino.cc/pro/software-pro-cli/) is needed. To program ESP32 with Arduino please follow this [tutorial](https://shop.m5stack.com/blogs/news/step-by-step-guide-how-to-program-esp32-with-arduino-ide).
 
 ### Usage
+This code reads the data of the sensors and sends them to the receiver via ESP-NOW. To send the data to a different receiver the MAC address of the receiver must be changed in the code:
+
+  ```bash
+  // REPLACE WITH THE RECEIVER'S MAC Address
+//uint8_t broadcastAddress[] = {0xC8,0xF0,0x9E,0x47,0xE5,0x54}; //ESP32
+//uint8_t broadcastAddress[] = {0xF4,0x12,0xFA,0x56,0x3C,0x20}; //ESP32 s3
+uint8_t broadcastAddress[] = {0xD4,0xD4,0xDA,0x97,0xF3,0x74}; //lilzGo Lite
+  ```
+  
+To find the MAC address of the receiver use the code "get_macAdress" in the receiver folder.
