@@ -464,7 +464,7 @@ void loop() {
       sprintf(val, "%dA%d", minMinDistance, MinPositionLocation); //roundedRssiScaled
       //Serial.println((String)minMinDistance + 'A' + MinPositionLocation);
       //*
-      incrementalVal=incrementalVal+1;
+      //incrementalVal=incrementalVal+1;
       Serial.print(roundedRssiScaled);
       Serial.print(',');
       Serial.println(minMinDistance);

@@ -39,20 +39,13 @@ SSD1306Wire  display(0x3c, OLED_SDA, OLED_SCL);
 
 int distanceArray[8] = {0};
 int distanceMinArray[3] = {0};
-int minDistance0 = 0;
-int minDistance1 = 0;
-int minDistance2 = 0;
 int minMinDistance = 0;
 int roundedRssiScaled = 0;
 int rssi = 0;
 
-int minPosition0 = 0;
-int minPosition1 = 0;
-int minPosition2 = 0;
 int minMinPosition = 0;
 int MinPositionLocation = 0;
 int distanceMinPosition[3] = {0};
-
 
 // Structure example to receive data
 // Must match the sender structure
@@ -70,19 +63,6 @@ typedef struct struct_message {
 }struct_message;
 
 int strip;
-int distance0;
-int distance1;
-int distance2;
-int distance3;
-int distance4;
-int distance5;
-int distance6;
-int distance7;
-
-int oldDistance0, oldDistance1, oldDistance2, oldDistance3, oldDistance4, oldDistance5, oldDistance6, oldDistance7;
-int oldDistance10, oldDistance11, oldDistance12, oldDistance13, oldDistance14, oldDistance15, oldDistance16, oldDistance17;
-int oldDistance20, oldDistance21, oldDistance22, oldDistance23, oldDistance24, oldDistance25, oldDistance26, oldDistance27;
-
 const int numreadings = 15;
 
 //-------------------------------------MinDistance-------------------------------------
@@ -132,161 +112,40 @@ void OnDataRecv(const uint8_t * mac_addr, const uint8_t *incomingData, int len) 
 
   memcpy(&myData, incomingData, sizeof(myData));
 
-  boardsStruct[myData.id-1].d0 = myData.d0;
-  boardsStruct[myData.id-1].d1 = myData.d7;
-  boardsStruct[myData.id-1].d2 = myData.d1;
-  boardsStruct[myData.id-1].d3 = myData.d6;
-  boardsStruct[myData.id-1].d4 = myData.d2;
-  boardsStruct[myData.id-1].d5 = myData.d5;
-  boardsStruct[myData.id-1].d6 = myData.d3;
-  boardsStruct[myData.id-1].d7 = myData.d4;
-
   strip = myData.st;
-  distance0 = boardsStruct[myData.id-1].d0;
-  distance1 = boardsStruct[myData.id-1].d1;
-  distance2 = boardsStruct[myData.id-1].d2;
-  distance3 = boardsStruct[myData.id-1].d3;
-  distance4 = boardsStruct[myData.id-1].d4;
-  distance5 = boardsStruct[myData.id-1].d5;
-  distance6 = boardsStruct[myData.id-1].d6;
-  distance7 = boardsStruct[myData.id-1].d7;
+  distanceArray[0]  = myData.d0;
+  distanceArray[1]  = myData.d7;
+  distanceArray[2]  = myData.d1;
+  distanceArray[3]  = myData.d6;
+  distanceArray[4]  = myData.d2;
+  distanceArray[5]  = myData.d5;
+  distanceArray[6]  = myData.d3;
+  distanceArray[7]  = myData.d4;
 
+  //Limit the measured distance to 1m
+  for(int a = 0; a < 8; a++){
+    if(distanceArray[a]>1000){
+      distanceArray[a]=1000;
+    }
+  }
+
+  //Find the minimum distace measured and the position where is it measured
   if(strip == 2){
-    if(distance0>1000){
-    distance0=1000;
-  }
-  if(distance1>1000){
-    distance1=1000;
-  }
-  if(distance2>1000){
-    distance2=1000;
-  }
-  if(distance2>1000){
-    distance2=1000;
-  }
-  if(distance3>1000){
-    distance3=1000;
-  }
-  if(distance4>1000){
-    distance4=1000;
-  }
-  if(distance5>1000){
-    distance5=1000;
-  }
-  if(distance6>1000){
-    distance6=1000;
-  }
-  if(distance7>1000){
-    distance7=1000;
-  }
-
-
-  distanceArray[0] = distance0;
-  distanceArray[1] = distance1;
-  distanceArray[2] = distance2;
-  distanceArray[3] = distance3;
-  distanceArray[4] = distance4;
-  distanceArray[5] = distance5;
-  distanceArray[6] = distance6;
-  distanceArray[7] = distance7;
-
-  minDistance0 = getMin(distanceArray, 8);
-  minPosition0 = findSmallestPosition(distanceArray,8);
-
+    distanceMinArray[0] = getMin(distanceArray, 8);
+    distanceMinPosition[0] = findSmallestPosition(distanceArray,8);
   }
 
   if(strip == 1){
-  if(distance0>1000){
-    distance0=1000;
+    distanceMinArray[1] = getMin(distanceArray, 8);
+    distanceMinPosition[1] = findSmallestPosition(distanceArray,8);
   }
-  if(distance1>1000){
-    distance1=1000;
-  }
-  if(distance2>1000){
-    distance2=1000;
-  }
-  if(distance2>1000){
-    distance2=1000;
-  }
-  if(distance3>1000){
-    distance3=1000;
-  }
-  if(distance4>1000){
-    distance4=1000;
-  }
-  if(distance5>1000){
-    distance5=1000;
-  }
-  if(distance6>1000){
-    distance6=1000;
-  }
-  if(distance7>1000){
-    distance7=1000;
-  }
-
-
-  distanceArray[0] = distance0;
-  distanceArray[1] = distance1;
-  distanceArray[2] = distance2;
-  distanceArray[3] = distance3;
-  distanceArray[4] = distance4;
-  distanceArray[5] = distance5;
-  distanceArray[6] = distance6;
-  distanceArray[7] = distance7;
-
-  minDistance1 = getMin(distanceArray, 8);
-  minPosition1 = findSmallestPosition(distanceArray,8);
-
-  }
-  
 
   if(strip == 0){
-  if(distance0>1000){
-    distance0=1000;
-  }
-  if(distance1>1000){
-    distance1=1000;
-  }
-  if(distance2>1000){
-    distance2=1000;
-  }
-  if(distance2>1000){
-    distance2=1000;
-  }
-  if(distance3>1000){
-    distance3=1000;
-  }
-  if(distance4>1000){
-    distance4=1000;
-  }
-  if(distance5>1000){
-    distance5=1000;
-  }
-  if(distance6>1000){
-    distance6=1000;
-  }
-  if(distance7>1000){
-    distance7=1000;
+    distanceMinArray[2] = getMin(distanceArray, 8);
+    distanceMinPosition[2] = findSmallestPosition(distanceArray,8);
   }
 
 
-  distanceArray[0] = distance0;
-  distanceArray[1] = distance1;
-  distanceArray[2] = distance2;
-  distanceArray[3] = distance3;
-  distanceArray[4] = distance4;
-  distanceArray[5] = distance5;
-  distanceArray[6] = distance6;
-  distanceArray[7] = distance7;
-
-  minDistance2 = getMin(distanceArray, 8);
-  minPosition2 = findSmallestPosition(distanceArray,8);
-
-  }
-
-  distanceMinArray[0] = minDistance0;
-  distanceMinArray[1] = minDistance1;
-  distanceMinArray[2] = minDistance2;
   minMinDistance = getMin(distanceMinArray,3);
 
   total = total - readings[readIndex];
@@ -300,35 +159,11 @@ void OnDataRecv(const uint8_t * mac_addr, const uint8_t *incomingData, int len) 
   
   minMinPosition = findSmallestPosition(distanceMinArray,3);
 
-  distanceMinPosition[0] = minPosition0;
-  distanceMinPosition[1] = minPosition1;
-  distanceMinPosition[2] = minPosition2;
-
   MinPositionLocation = minMinPosition << 3 | distanceMinPosition[minMinPosition];
 
 
   //---------------------------------------ROS-----------------------------------------------
 
-  /*
-  char formattedString[150]; 
-  snprintf(formattedString, sizeof(formattedString), "%d,%d,%d,%d,%d,%d,%d,%d,%d,%d",
-            myData.id,
-            myData.st,
-            boardsStruct[myData.id - 1].d0,
-            boardsStruct[myData.id - 1].d1,
-            boardsStruct[myData.id - 1].d2,
-            boardsStruct[myData.id - 1].d3,
-            boardsStruct[myData.id - 1].d4,
-            boardsStruct[myData.id - 1].d5,
-            boardsStruct[myData.id - 1].d6,
-            boardsStruct[myData.id - 1].d7);
-
-  //Print the string to a ROS2 topic
-  msg.data.data = formattedString;
-  RCSOFTCHECK(rcl_publish(&publisher, &msg, NULL));
-  */
-
-  //*
   char formattedString[150]; 
   snprintf(formattedString, sizeof(formattedString), "%d,%d",
             minMinDistance,
