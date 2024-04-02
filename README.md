@@ -50,6 +50,7 @@ This folder contains two programs:
 When one of these programs is updated on the receiver connect the receiver via USB on a ROS2 computer. on the ROS2 computer start the **micro-ROS agent** by using this docker command:
 
 ```bash
+source /opt/ros/humble/setup.bash
 # Serial micro-ROS Agent
 docker run -it --rm -v /dev:/dev -v /dev/shm:/dev/shm --privileged --net=host microros/micro-ros-agent:$ROS_DISTRO serial --dev [YOUR BOARD PORT] -v6
 ```
