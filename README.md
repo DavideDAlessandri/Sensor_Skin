@@ -47,7 +47,7 @@ This folder contains two programs:
 - 1 full data: to transmit all sensor data
 - 2 position and distance: to transmit only the minimum distance and the sensor measuring the minimum distance
 
-When one of these program is updated on the receiver connect the receiver via USB on a ROS2 computer. on the ROS2 computer start the **micro-ROS agent** by using this docker command:
+When one of these programs is updated on the receiver connect the receiver via USB on a ROS2 computer. on the ROS2 computer start the **micro-ROS agent** by using this docker command:
 
 ```bash
 # Serial micro-ROS Agent
