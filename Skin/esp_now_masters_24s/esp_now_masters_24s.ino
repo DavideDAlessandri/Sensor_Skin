@@ -120,20 +120,6 @@ void setup() {//----------------------------------------<=SETUP-----------------
 
 void loop() {//----------------------------------------<=LOOP-------------------
 
-/*read sensors values
-if(strip0){
-  readSensors();
-}
-
-if(strip1){
-  readSensors1();
-}
-
-if(strip2){
-  readSensors2();
-}
-*/
-
 //read sensors data and sendit to slave
 for(int i=0; i<=2; i++){
   t1 = millis();
@@ -182,9 +168,5 @@ void sendData(int i){
   else {
     Serial.println("Error sending the data");
   }
-  //delay(10); //60 per 1 accoppiato a 2 // 20 per 2 // 10 per 3 // 0 per fast
 
-  //t2 = millis();
-  //Serial.print("Time taken by the task: "); Serial.print(t2-t1); Serial.println(" milliseconds");
-  //Serial.println("");
 }
