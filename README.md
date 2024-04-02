@@ -67,11 +67,10 @@ To update the code on the ESP32 microcontroller [Arduino IDE](https://www.arduin
 This code allows TCP-IP communication, the receiver is the slave and the robot controller is the master. To allow the communication connect the receiver with an RJ45 cable to the router connected also to the robot controller. Remember to set the **IP address** and the **port** of the server in the code:
 
 ```bash
+//Set ip andress and port of the server:
 EthernetClient client;
 IPAddress server(192,168,0,100); 
-
-// Set tcp-ip port:
-if (client.connect(server,8075))
+int serverPort = 8075;
 ```
 
 Once the connection is established the microcontroller starts to send the data to the master.

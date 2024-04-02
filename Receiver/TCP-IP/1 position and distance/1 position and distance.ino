@@ -26,24 +26,20 @@ byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 #define     OLED_SDA       21
 SSD1306Wire  display(0x3c, OLED_SDA, OLED_SCL);
 
+//Set ip andress and port of the server:
 EthernetClient client;
-IPAddress server(192,168,0,100); //192,168,0,100 ,192,168,100,100, 192,168,100,103
+IPAddress server(192,168,0,100); 
+int serverPort = 8075;
 
  int val = 0;
  int incrementalVal = 0;   
 
 int distanceArray[8] = {0};
 int distanceMinArray[3] = {0};
-int minDistance0 = 0;
-int minDistance1 = 0;
-int minDistance2 = 0;
 int minMinDistance = 0;
 int roundedRssiScaled = 0;
 int rssi = 0;
 
-int minPosition0 = 0;
-int minPosition1 = 0;
-int minPosition2 = 0;
 int minMinPosition = 0;
 int MinPositionLocation = 0;
 int distanceMinPosition[3] = {0};
@@ -67,19 +63,6 @@ typedef struct struct_message {
 }struct_message;
 
 int strip;
-int distance0;
-int distance1;
-int distance2;
-int distance3;
-int distance4;
-int distance5;
-int distance6;
-int distance7;
-
-int oldDistance0, oldDistance1, oldDistance2, oldDistance3, oldDistance4, oldDistance5, oldDistance6, oldDistance7;
-int oldDistance10, oldDistance11, oldDistance12, oldDistance13, oldDistance14, oldDistance15, oldDistance16, oldDistance17;
-int oldDistance20, oldDistance21, oldDistance22, oldDistance23, oldDistance24, oldDistance25, oldDistance26, oldDistance27;
-
 const int numreadings = 15;
 
 //-------------------------------------MinDistance-------------------------------------
@@ -103,171 +86,43 @@ struct_message boardsStruct[3] = {board1, board2, board3};
 // callback function that will be executed when data is received
 void OnDataRecv(const uint8_t * mac_addr, const uint8_t *incomingData, int len) {
   char macStr[18];
-  /*
-  Serial.print("Packet received from: ");
-  snprintf(macStr, sizeof(macStr), "%02x:%02x:%02x:%02x:%02x:%02x",
-           mac_addr[0], mac_addr[1], mac_addr[2], mac_addr[3], mac_addr[4], mac_addr[5]);
-  Serial.println(macStr);
-  */
-  memcpy(&myData, incomingData, sizeof(myData));
-  // Serial.printf("Board %u, Strip %u: ", myData.id, myData.st);
-  // Update the structures with the new incoming data
-  boardsStruct[myData.id-1].d0 = myData.d0;
-  boardsStruct[myData.id-1].d1 = myData.d7;
-  boardsStruct[myData.id-1].d2 = myData.d1;
-  boardsStruct[myData.id-1].d3 = myData.d6;
-  boardsStruct[myData.id-1].d4 = myData.d2;
-  boardsStruct[myData.id-1].d5 = myData.d5;
-  boardsStruct[myData.id-1].d6 = myData.d3;
-  boardsStruct[myData.id-1].d7 = myData.d4;
 
+  memcpy(&myData, incomingData, sizeof(myData));
 
   strip = myData.st;
-  distance0 = boardsStruct[myData.id-1].d0;
-  distance1 = boardsStruct[myData.id-1].d1;
-  distance2 = boardsStruct[myData.id-1].d2;
-  distance3 = boardsStruct[myData.id-1].d3;
-  distance4 = boardsStruct[myData.id-1].d4;
-  distance5 = boardsStruct[myData.id-1].d5;
-  distance6 = boardsStruct[myData.id-1].d6;
-  distance7 = boardsStruct[myData.id-1].d7;
+  distanceArray[0]  = myData.d0;
+  distanceArray[1]  = myData.d7;
+  distanceArray[2]  = myData.d1;
+  distanceArray[3]  = myData.d6;
+  distanceArray[4]  = myData.d2;
+  distanceArray[5]  = myData.d5;
+  distanceArray[6]  = myData.d3;
+  distanceArray[7]  = myData.d4;
 
+  //Limit the measured distance to 1m
+  for(int a = 0; a < 8; a++){
+    if(distanceArray[a]>1000){
+      distanceArray[a]=1000;
+    }
+  }
+
+  //Find the minimum distace measured and the position where is it measured
   if(strip == 2){
-    if(distance0>1000){
-    distance0=1000;
-  }
-  if(distance1>1000){
-    distance1=1000;
-  }
-  if(distance2>1000){
-    distance2=1000;
-  }
-  if(distance2>1000){
-    distance2=1000;
-  }
-  if(distance3>1000){
-    distance3=1000;
-  }
-  if(distance4>1000){
-    distance4=1000;
-  }
-  if(distance5>1000){
-    distance5=1000;
-  }
-  if(distance6>1000){
-    distance6=1000;
-  }
-  if(distance7>1000){
-    distance7=1000;
-  }
-
-
-  distanceArray[0] = distance0;
-  distanceArray[1] = distance1;
-  distanceArray[2] = distance2;
-  distanceArray[3] = distance3;
-  distanceArray[4] = distance4;
-  distanceArray[5] = distance5;
-  distanceArray[6] = distance6;
-  distanceArray[7] = distance7;
-
-  minDistance0 = getMin(distanceArray, 8);
-  minPosition0 = findSmallestPosition(distanceArray,8);
-
+    distanceMinArray[0] = getMin(distanceArray, 8);
+    distanceMinPosition[0] = findSmallestPosition(distanceArray,8);
   }
 
   if(strip == 1){
-  if(distance0>1000){
-    distance0=1000;
+    distanceMinArray[1] = getMin(distanceArray, 8);
+    distanceMinPosition[1] = findSmallestPosition(distanceArray,8);
   }
-  if(distance1>1000){
-    distance1=1000;
-  }
-  if(distance2>1000){
-    distance2=1000;
-  }
-  if(distance2>1000){
-    distance2=1000;
-  }
-  if(distance3>1000){
-    distance3=1000;
-  }
-  if(distance4>1000){
-    distance4=1000;
-  }
-  if(distance5>1000){
-    distance5=1000;
-  }
-  if(distance6>1000){
-    distance6=1000;
-  }
-  if(distance7>1000){
-    distance7=1000;
-  }
-
-
-  distanceArray[0] = distance0;
-  distanceArray[1] = distance1;
-  distanceArray[2] = distance2;
-  distanceArray[3] = distance3;
-  distanceArray[4] = distance4;
-  distanceArray[5] = distance5;
-  distanceArray[6] = distance6;
-  distanceArray[7] = distance7;
-
-  minDistance1 = getMin(distanceArray, 8);
-  minPosition1 = findSmallestPosition(distanceArray,8);
-
-  }
-  
 
   if(strip == 0){
-  if(distance0>1000){
-    distance0=1000;
-  }
-  if(distance1>1000){
-    distance1=1000;
-  }
-  if(distance2>1000){
-    distance2=1000;
-  }
-  if(distance2>1000){
-    distance2=1000;
-  }
-  if(distance3>1000){
-    distance3=1000;
-  }
-  if(distance4>1000){
-    distance4=1000;
-  }
-  if(distance5>1000){
-    distance5=1000;
-  }
-  if(distance6>1000){
-    distance6=1000;
-  }
-  if(distance7>1000){
-    distance7=1000;
+    distanceMinArray[2] = getMin(distanceArray, 8);
+    distanceMinPosition[2] = findSmallestPosition(distanceArray,8);
   }
 
 
-  distanceArray[0] = distance0;
-  distanceArray[1] = distance1;
-  distanceArray[2] = distance2;
-  distanceArray[3] = distance3;
-  distanceArray[4] = distance4;
-  distanceArray[5] = distance5;
-  distanceArray[6] = distance6;
-  distanceArray[7] = distance7;
-
-  minDistance2 = getMin(distanceArray, 8);
-  minPosition2 = findSmallestPosition(distanceArray,8);
-
-  }
-
-  distanceMinArray[0] = minDistance0;
-  distanceMinArray[1] = minDistance1;
-  distanceMinArray[2] = minDistance2;
   minMinDistance = getMin(distanceMinArray,3);
 
   total = total - readings[readIndex];
@@ -281,15 +136,7 @@ void OnDataRecv(const uint8_t * mac_addr, const uint8_t *incomingData, int len) 
   
   minMinPosition = findSmallestPosition(distanceMinArray,3);
 
-  distanceMinPosition[0] = minPosition0;
-  distanceMinPosition[1] = minPosition1;
-  distanceMinPosition[2] = minPosition2;
-
   MinPositionLocation = minMinPosition << 3 | distanceMinPosition[minMinPosition];
-
-
-  //sendToPC(&minMinDistance, &roundedRssiScaled, &MinPositionLocation);
-
 
 }
 
@@ -409,7 +256,7 @@ void setup() {//----------------------------------------------------------------
     display.display();
 
     // Set tcp-ip port:
-    if (client.connect(server,8075))
+    if (client.connect(server,serverPort))
     {
         Serial.print("Connected to server running at ");
         Serial.println(client.remoteIP());
@@ -460,18 +307,14 @@ void loop() {
     }
 
     if (client.connected()){
-      char val[20];  // Assumendo una dimensione sufficientemente grande per contenere la stringa formattata
-      sprintf(val, "%dA%d", minMinDistance, MinPositionLocation); //roundedRssiScaled
-      //Serial.println((String)minMinDistance + 'A' + MinPositionLocation);
-      //*
-      //incrementalVal=incrementalVal+1;
+      char val[20];  // value must contain the formatted string
+      sprintf(val, "%dA%d", minMinDistance, MinPositionLocation);
+
       Serial.print(roundedRssiScaled);
       Serial.print(',');
       Serial.println(minMinDistance);
-      //Serial.print(',');
-      //Serial.println(incrementalVal);
-      //*/
 
+      //Send via TCP/IP
       client.write(val);
     }
     delay(20);
