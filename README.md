@@ -74,7 +74,7 @@ IPAddress server(192,168,0,100);
 int serverPort = 8075;
 ```
 
-Once the connection is established the microcontroller starts to send the data to the master.
+Once the connection is established the microcontroller starts to send the data to the master (the **master must send a message** to the slave before receiving messages).
 
 ---
 ## Author
